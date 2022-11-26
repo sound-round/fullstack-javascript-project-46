@@ -2,7 +2,7 @@ import * as fs from 'node:fs';
 import path from 'node:path';
 import _ from 'lodash';
 
-const indent = ' ';
+const indent = '  ';
 
 const getKeys = (firstData, secondData) => {
   const keys1 = Object.keys(firstData);
@@ -22,7 +22,7 @@ const makeDiff = (parts) => {
   return diff;
 };
 
-const genDiff = (filepath1, filepath2) => {
+export default function genDiff(filepath1, filepath2) {
   try {
     const json1 = fs.readFileSync(path.resolve(filepath1), 'utf8');
     const json2 = fs.readFileSync(path.resolve(filepath2), 'utf8');
@@ -63,6 +63,4 @@ const genDiff = (filepath1, filepath2) => {
     console.error(err);
   }
   return null;
-};
-
-export default genDiff;
+}
