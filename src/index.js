@@ -1,6 +1,5 @@
-import * as fs from 'node:fs';
-import path from 'node:path';
 import _ from 'lodash';
+import parseFile from '../utils/parsers.js';
 
 const indent = '  ';
 
@@ -22,13 +21,10 @@ const makeDiff = (parts) => {
   return diff;
 };
 
-export default function genDiff(filepath1, filepath2) {
+export default function genDiff(filePath1, filePath2) {
   try {
-    const json1 = fs.readFileSync(path.resolve(filepath1), 'utf8');
-    const json2 = fs.readFileSync(path.resolve(filepath2), 'utf8');
-
-    const config1 = JSON.parse(json1);
-    const config2 = JSON.parse(json2);
+    const config1 = parseFile(filePath1);
+    const config2 = parseFile(filePath2);
 
     const parts = [];
 
