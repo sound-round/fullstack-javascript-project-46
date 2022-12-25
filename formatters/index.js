@@ -1,5 +1,6 @@
 import stylish from "./stylish.js";
 import plain from "./plain.js";
+import json from "./json.js"
 
 export default function getFormatter(formatterName) {
   switch (formatterName) {
@@ -7,5 +8,7 @@ export default function getFormatter(formatterName) {
       return stylish
     case "plain":
       return plain
+    case "json":
+      return json
   }
 }
