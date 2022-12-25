@@ -59,7 +59,7 @@ export default function genDiff(filePath1, filePath2, format = 'stylish') {
     const config1 = parseFile(filePath1);
     const config2 = parseFile(filePath2);
     const tree = buildTree(config1, config2);
-    const formatter = getFormatter(format)
+    const formatter = getFormatter(format);
     const diff = formatter(tree);
     return diff;
   } catch (err) {

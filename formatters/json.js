@@ -1,3 +1,3 @@
-export default function json (diff) {
-  return JSON.stringify(diff, null, 4)
+export default function json(diff) {
+  return JSON.stringify(diff, null, 4);
 }

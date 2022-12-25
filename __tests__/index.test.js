@@ -24,7 +24,7 @@ describe('test gendiff plain format', () => {
     const firstFilePath = getFixturePath('file1.json');
     const secondFilePath = getFixturePath('file2.json');
     const expected = readFile('result.plain').trim();
-    const result = genDiff(firstFilePath, secondFilePath, "plain");
+    const result = genDiff(firstFilePath, secondFilePath, 'plain');
     expect(result).toBe(expected);
   });
 
@@ -32,7 +32,7 @@ describe('test gendiff plain format', () => {
     const firstFilePath = getFixturePath('file1.yaml');
     const secondFilePath = getFixturePath('file2.yaml');
     const expected = readFile('result.plain').trim();
-    const result = genDiff(firstFilePath, secondFilePath, "plain");
+    const result = genDiff(firstFilePath, secondFilePath, 'plain');
     expect(result).toBe(expected);
   });
 });
@@ -42,7 +42,7 @@ describe('test gendiff json format', () => {
     const firstFilePath = getFixturePath('file1.json');
     const secondFilePath = getFixturePath('file2.json');
     const expected = readFile('result.json').trim();
-    const result = genDiff(firstFilePath, secondFilePath, "json");
+    const result = genDiff(firstFilePath, secondFilePath, 'json');
     expect(result).toBe(expected);
   });
 
@@ -50,7 +50,7 @@ describe('test gendiff json format', () => {
     const firstFilePath = getFixturePath('file1.yaml');
     const secondFilePath = getFixturePath('file2.yaml');
     const expected = readFile('result.json').trim();
-    const result = genDiff(firstFilePath, secondFilePath, "json");
+    const result = genDiff(firstFilePath, secondFilePath, 'json');
     expect(result).toBe(expected);
   });
 });
