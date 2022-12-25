@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import parseFile from '../utils/parsers.js';
-import stylish from '../utils/formatters.js';
+import getFormatter from '../formatters/index.js';
 
 const getKeys = (firstData, secondData) => {
   const keys1 = Object.keys(firstData);
@@ -54,14 +54,13 @@ const buildTree = (node1, node2) => {
   return tree;
 };
 
-export default function genDiff(filePath1, filePath2, format = stylish) {
+export default function genDiff(filePath1, filePath2, format = 'stylish') {
   try {
     const config1 = parseFile(filePath1);
     const config2 = parseFile(filePath2);
-
     const tree = buildTree(config1, config2);
-    const diff = format(tree);
-    console.log(diff);
+    const formatter = getFormatter(format)
+    const diff = formatter(tree);
     return diff;
   } catch (err) {
     console.error(err);
