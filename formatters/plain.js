@@ -5,39 +5,23 @@ const stringify = (value) => {
   return String(value).toLowerCase();
 };
 
-const turnPathToString = (path) => path.join('.');
-
-export default function plain(nodes) {
-  const lines = [];
-  const path = [];
-
-  const walk = (tree, path) => {
-    tree.forEach((node) => {
-      const newPath = [...path, node.key];
+export default function plain(tree) {
+  const format = (nodes, parent) => nodes
+    .filter((node) => node.type !== 'unchanged')
+    .map((node) => {
+      const property = parent ? `${parent}.${node.key}` : node.key;
       switch (node.type) {
-        case 'nested':
-          walk(node.children, newPath);
-          break;
-
-        case 'removed':
-          lines.push(`Property '${turnPathToString(newPath)}' was removed`);
-          break;
-
         case 'added':
-          lines.push(
-            `Property '${turnPathToString(newPath)}' was added with value: ${stringify(node.value)}`,
-          );
-          break;
+          return `Property '${property}' was added with value: ${stringify(node.value)}`;
+        case 'removed':
+          return `Property '${property}' was removed`;
         case 'changed':
-          lines.push(
-            `Property '${turnPathToString(newPath)}' was updated. From ${stringify(node.oldValue)} to ${stringify(node.newValue)}`,
-          );
-          break;
+          return `Property '${property}' was updated. From ${stringify(node.oldValue)} to ${stringify(node.newValue)}`;
+        case 'nested':
+          return `${format(node.children, property)}`;
         default:
-          break;
+          throw new Error(`This type does not exist: ${node.type}`);
       }
-    });
-    return lines.join('\n');
-  };
-  return walk(nodes, path);
+    }).join('\n');
+  return format(tree, 0);
 }

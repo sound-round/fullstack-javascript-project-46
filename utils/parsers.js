@@ -7,13 +7,12 @@ const openFile = (filePath) => fs.readFileSync(path.resolve(filePath), 'utf8');
 export default function parseFile(filePath) {
   const file = openFile(filePath);
   const ext = path.extname(filePath);
-  let parse;
 
   if (ext.toLowerCase() === '.json') {
-    parse = JSON.parse;
-  } else if (ext.toLowerCase() === '.yml' || ext.toLowerCase() === '.yaml') {
-    parse = yaml.load;
+    return JSON.parse(file);
   }
-
-  return parse(file);
+  if (ext.toLowerCase() === '.yml' || ext.toLowerCase() === '.yaml') {
+    return yaml.load(file);
+  }
+  return null;
 }

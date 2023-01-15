@@ -3,6 +3,7 @@
 plugins:
   # https://github.com/jest-community/eslint-plugin-jest
   - jest
+  - "fp"
 
 # https://eslint.org/docs/user-guide/configuring#specifying-environments
 env:
@@ -17,7 +18,9 @@ parserOptions:
 
 rules:
   no-console: 0
-  no-shadow: 0
+  # no-shadow: 0
+  fp/no-mutating-methods: 1
+  fp/no-mutation: 1
   import/extensions: # FIXME: remove when rule will be adjusted for new nodejs version
     - error
     - ignorePackages

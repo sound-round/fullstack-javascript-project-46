@@ -13,7 +13,7 @@ lint:
 lint-fix:
 	npx eslint . --fix
 
-test:
+test t:
 	npm test
 
 test-coverage:

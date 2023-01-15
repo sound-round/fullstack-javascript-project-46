@@ -13,45 +13,37 @@ const getKeys = (firstData, secondData) => {
 
 const buildTree = (node1, node2) => {
   const { allKeys, newKeys, removedKeys } = getKeys(node1, node2);
-  allKeys.sort();
 
-  const tree = [];
-
-  allKeys.forEach((key) => {
+  const sortedKeys = _.sortBy(allKeys);
+  return sortedKeys.map((key) => {
     if (removedKeys.includes(key)) {
-      tree.push({
+      return {
         type: 'removed', key, value: node1[key],
-      });
-      return;
+      };
     }
 
     if (newKeys.includes(key)) {
-      tree.push({
+      return {
         type: 'added', key, value: node2[key],
-      });
-      return;
+      };
     }
 
     if (typeof node1[key] === 'object' && typeof node2[key] === 'object') {
-      tree.push({
+      return {
         type: 'nested', key, children: buildTree(node1[key], node2[key]),
-      });
-      return;
+      };
     }
 
     if (node1[key] === node2[key]) {
-      tree.push({
+      return {
         type: 'unchanged', key, value: node1[key],
-      });
-      return;
+      };
     }
 
-    tree.push({
+    return {
       type: 'changed', key, oldValue: node1[key], newValue: node2[key],
-    });
+    };
   });
-
-  return tree;
 };
 
 export default function genDiff(filePath1, filePath2, format = 'stylish') {

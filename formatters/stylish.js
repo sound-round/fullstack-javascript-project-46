@@ -13,13 +13,8 @@ function getIndent(depth, indentType = ' ', indentSize = 4, offset = 0) {
 const stringify = (tree, depth) => {
   if (tree instanceof Object) {
     const braceIndent = getIndent(depth + 1);
-    const deepIndent = getIndent(depth + 1, ' ', 4, 3); // why offset is 3?
-    const formattedValues = [];
-    Object.entries(tree).forEach(([key, value]) => {
-      formattedValues.push(
-        `${deepIndent} ${key}: ${stringify(value, depth + 1)}`,
-      );
-    });
+    const deepIndent = getIndent(depth + 1, ' ', 4, 3);
+    const formattedValues = Object.entries(tree).map(([key, value]) => `${deepIndent} ${key}: ${stringify(value, depth + 1)}`);
     return `{\n${formattedValues.join('\n')}\n${braceIndent}}`;
   }
 
@@ -31,33 +26,20 @@ const stringify = (tree, depth) => {
 const walk = (tree, depth) => {
   const braceIndent = getIndent(depth);
   const deepIndent = getIndent(depth, ' ', 4, 2);
-  const lines = [];
 
   if (!(tree instanceof Array) && !(tree instanceof Object)) {
     return String(tree);
   }
 
-  tree.forEach((node) => {
+  const joinedLines = tree.map((node) => {
     if (node.type === 'nested') {
-      lines.push(
-        `${deepIndent}${mapTypeToSign.nested} ${node.key}: ${walk(node.children, depth + 1)}`,
-      );
-      return;
+      return `${deepIndent}${mapTypeToSign.nested} ${node.key}: ${walk(node.children, depth + 1)}`;
     }
     if (node.type === 'changed') {
-      lines.push(
-        `${deepIndent}${mapTypeToSign.removed} ${node.key}: ${stringify(node.oldValue, depth)}`,
-      );
-      lines.push(
-        `${deepIndent}${mapTypeToSign.added} ${node.key}: ${stringify(node.newValue, depth)}`,
-      );
-      return;
+      return `${deepIndent}${mapTypeToSign.removed} ${node.key}: ${stringify(node.oldValue, depth)}\n${deepIndent}${mapTypeToSign.added} ${node.key}: ${stringify(node.newValue, depth)}`;
     }
-    lines.push(
-      `${deepIndent}${mapTypeToSign[node.type]} ${node.key}: ${stringify(node.value, depth)}`,
-    );
-  });
-  const joinedLines = lines.join('\n');
+    return `${deepIndent}${mapTypeToSign[node.type]} ${node.key}: ${stringify(node.value, depth)}`;
+  }).join('\n');
   const formattedDiff = ['{', joinedLines, `${braceIndent}}`];
   return formattedDiff.join('\n');
 };
